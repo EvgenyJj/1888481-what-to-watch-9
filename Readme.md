@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Evgeny  Danilov](https://up.htmlacademy.ru/react/9/user/1888481).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Марков](https://htmlacademy.ru/profile/damarkov).
 
 ---
 
