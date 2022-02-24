@@ -25,7 +25,7 @@ function FilmPage(): JSX.Element {
                 </div>
               </li>
               <li className="user-block__item">
-                <a href="user-block__link">Sign out</a>
+                <a className="user-block__link">Sign out</a>
               </li>
             </ul>
           </header>
