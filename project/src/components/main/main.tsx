@@ -1,14 +1,15 @@
-import DisplayingMovieCard from '../displaying-movie-card/displaying-movie-card';
+import MovieCard from '../movie-card/movie-card';
+import Logo from '../logo/logo';
 
 const CARDS_COUNT = 20;
 
 type MainPageProps = {
-  title: string,
   genre: string,
-  releaseDate: number
+  releaseDate: number,
+  title: string,
 }
 
-function RenderingMainPage({title, genre, releaseDate}: MainPageProps): JSX.Element {
+function MainPage({title, genre, releaseDate}: MainPageProps): JSX.Element {
   return (
     <>
       <section className="film-card">
@@ -19,13 +20,7 @@ function RenderingMainPage({title, genre, releaseDate}: MainPageProps): JSX.Elem
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
-          <div className="logo">
-            <a className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <Logo />
         </header>
 
         <div className="film-card__wrap">
@@ -101,7 +96,7 @@ function RenderingMainPage({title, genre, releaseDate}: MainPageProps): JSX.Elem
               new Array(CARDS_COUNT)
                 .fill(null)
                 .map((item, index) => index)
-                .map((card) => <DisplayingMovieCard key={card} />)
+                .map((card) => <MovieCard key={card} />)
             }
           </div>
 
@@ -111,13 +106,7 @@ function RenderingMainPage({title, genre, releaseDate}: MainPageProps): JSX.Elem
         </section>
 
         <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+          <Logo />
 
           <div className="copyright">
             <p>© 2019 What to watch Ltd.</p>
@@ -128,4 +117,4 @@ function RenderingMainPage({title, genre, releaseDate}: MainPageProps): JSX.Elem
   );
 }
 
-export default RenderingMainPage;
+export default MainPage;
