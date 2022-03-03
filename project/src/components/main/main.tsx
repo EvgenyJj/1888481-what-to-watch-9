@@ -1,49 +1,55 @@
-import MovieCard from '../movie-card/movie-card';
+import FilmList from '../film-list/film-list';
 import Logo from '../logo/logo';
-
-const CARDS_COUNT = 20;
+import User from '../user/user';
+import {AppRoute} from '../../const';
+import {Film} from '../../types/film';
+import {useNavigate} from 'react-router-dom';
 
 type MainPageProps = {
-  genre: string,
-  releaseDate: number,
-  title: string,
+  films: Film[],
 }
 
-function MainPage({title, genre, releaseDate}: MainPageProps): JSX.Element {
+function MainPage({films}: MainPageProps): JSX.Element {
+  const {backgroundImage, genre, name, posterImage, released, id} = films[5];
+  const navigate = useNavigate();
+  const onClickPlay = () => navigate(`/player/${id}`);
+  const onClickAdd = () => navigate(AppRoute.MyList);
+
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={backgroundImage} alt={name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
 
         <header className="page-header film-card__head">
           <Logo />
+          <User />
         </header>
 
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={posterImage} alt={name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{title}</h2>
+              <h2 className="film-card__title">{name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{releaseDate}</span>
+                <span className="film-card__year">{released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button" onClick={onClickPlay}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
+                <button className="btn btn--list film-card__button" type="button" onClick={onClickAdd}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
@@ -92,12 +98,7 @@ function MainPage({title, genre, releaseDate}: MainPageProps): JSX.Element {
             </li>
           </ul>
           <div className="catalog__films-list">
-            {
-              new Array(CARDS_COUNT)
-                .fill(null)
-                .map((item, index) => index)
-                .map((card) => <MovieCard key={card} />)
-            }
+            <FilmList films={films} />
           </div>
 
           <div className="catalog__more">
