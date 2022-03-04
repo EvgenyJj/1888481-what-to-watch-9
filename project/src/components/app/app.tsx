@@ -1,55 +1,65 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import {AppRoute, AuthorizationStatus} from '../../const';
-import MainPage from '../main/main';
 import AddReview from '../add-review/add-review';
 import FilmPage from '../film/film-page';
+import MainPage from '../main/main';
 import MyList from '../my-list/my-list';
-import Player from '../player/player';
-import SignIn from '../sign-in/sign-in';
 import PageNotFound from '../page-not-found/page-not-found';
-import PrivateRoute from '../private-route/private-route';
+import Player from '../player/player';
+import PrivateRoute from  '../private-route/private-route';
+import SignIn from '../sign-in/sign-in';
+import {AppRoute, AuthorizationStatus} from '../../const';
+import {Film} from '../../types/film';
+import {Route, BrowserRouter, Routes} from 'react-router-dom';
 
 type AppProps = {
-  movieSettings: {
-    genre: string,
-    releaseDate: number,
-    title: string,
-  }
+  films: Film[],
 }
 
-function App({movieSettings}: AppProps): JSX.Element {
+function App({films}: AppProps): JSX.Element {
+  const favorite = films.filter(({isFavorite}) => isFavorite);
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainPage title={movieSettings.title} genre={movieSettings.genre} releaseDate={movieSettings.releaseDate} />}
+          element={
+            <MainPage
+              films={films}
+            />
+          }
         />
         <Route
-          path={AppRoute.AddReview}
-          element={<AddReview />}
-        />
-        <Route
-          path={AppRoute.Film}
-          element={<FilmPage />}
+          path={AppRoute.SignIn}
+          element={<SignIn />}
         />
         <Route
           path={AppRoute.MyList}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <MyList />
+              <MyList
+                favorite={favorite}
+              />
             </PrivateRoute>
           }
         />
         <Route
-          path={AppRoute.Player}
-          element={<Player />}
+          path={AppRoute.Film}
+          element={
+            <FilmPage />
+          }
         />
         <Route
-          path={AppRoute.SignIn}
-          element={<SignIn />}
+          path={AppRoute.Player}
+          element={
+            <Player />
+          }
+        />
+        <Route
+          path={AppRoute.AddReview}
+          element={
+            <AddReview />
+          }
         />
         <Route
           path="*"
