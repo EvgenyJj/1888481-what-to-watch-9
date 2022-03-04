@@ -10,7 +10,7 @@ type ActiveId = null | number;
 
 function FilmList({films}: FilmListProps): JSX.Element {
   const [activeId, setActiveId] = useState(null as ActiveId);
-  const handleOnHover = (id: number): void => setActiveId(id);
+  const handleOnHover = (id: number | null): void => setActiveId(id);
 
   return (
     <div className="catalog__films-list">

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 type FilmCardProps = {
   film: Film,
-  onHover: (id: number) => void,
+  onHover: (id: number | null) => void,
   isActive: boolean
 }
 
@@ -12,6 +12,7 @@ function FilmCard({film, onHover, isActive}: FilmCardProps): JSX.Element {
   return (
     <article className="small-film-card catalog__films-card"
       onMouseOver={() => onHover(film.id)}
+      onMouseOut={() => onHover(null)}
     >
       <div className="small-film-card__image">
         <img src={previewImage} alt={name} width="280" height="175" />

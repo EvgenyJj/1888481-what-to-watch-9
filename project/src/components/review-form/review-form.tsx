@@ -3,7 +3,7 @@ import {ChangeEvent, Fragment, useState} from 'react';
 const FILM_SCORE = 10;
 
 function ReviewForm(): JSX.Element {
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
 
   return (
