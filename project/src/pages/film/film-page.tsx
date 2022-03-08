@@ -1,7 +1,7 @@
-import FilmList from '../film-list/film-list';
-import Logo from '../logo/logo';
-import PageNotFound from '../page-not-found/page-not-found';
-import User from '../user/user';
+import FilmList from '../../components/film-list/film-list';
+import Logo from '../../components/logo/logo';
+import PageNotFound from '../../components/page-not-found/page-not-found';
+import User from '../../components/user/user';
 import {AppRoute} from '../../const';
 import {films} from '../../mocks/films';
 import {reviews} from '../../mocks/reviews';
@@ -87,7 +87,7 @@ function FilmPage(): JSX.Element {
                 <div className="film-rating__score">{film.rating}</div>
                 <p className="film-rating__meta">
                   <span className="film-rating__level">Very good</span>
-                  <span className="film-rating__count">{reviewersCount}</span>
+                  <span className="film-rating__count">{reviewersCount} ratings</span>
                 </p>
               </div>
 

@@ -1,6 +1,6 @@
-import FilmList from '../film-list/film-list';
-import Logo from '../logo/logo';
-import User from '../user/user';
+import FilmList from '../../components/film-list/film-list';
+import Logo from '../../components/logo/logo';
+import User from '../../components/user/user';
 import {Film} from '../../types/film';
 
 type MyListProps = {

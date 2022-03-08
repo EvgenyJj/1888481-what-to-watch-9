@@ -26,7 +26,12 @@ function ReviewForm(): JSX.Element {
                     value={value}
                     checked={rating === value}
                   />
-                  <label className="rating__label" htmlFor={`star-${value}`}>Rating {`star-${value}`}</label>
+                  <label
+                    className="rating__label"
+                    htmlFor={`star-${value}`}
+                  >
+                    Rating{`star-${value}`}
+                  </label>
                 </Fragment>
               ))
           }
