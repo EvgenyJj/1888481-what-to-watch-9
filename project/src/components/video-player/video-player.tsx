@@ -2,25 +2,25 @@ import {Film} from '../../types/film';
 import {useState, useEffect, useRef} from 'react';
 
 type VideoPlayerProps = {
-  autoPlay: boolean;
-  muted?: boolean;
+  isMuted?: boolean;
+  isPlaying: boolean;
+  isShowButtonControls?: boolean;
   onExit?: () => void;
-  showButtonControls?: boolean;
+  onPlayButtonClick?: () => void;
   video: Film;
 }
 
 function VideoPlayer({
-  autoPlay,
-  muted = false,
+  isMuted,
+  isPlaying,
+  isShowButtonControls,
   onExit,
-  showButtonControls = true,
-  video,
-}: VideoPlayerProps): JSX.Element {
+  onPlayButtonClick,
+  video}: VideoPlayerProps): JSX.Element {
   const [isLoading, setIsLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [currentProgress, setCurrentProgress] = useState(0);
-
   const {name, videoLink, previewImage} = video;
+
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -47,13 +47,12 @@ function VideoPlayer({
     }
 
     videoRef.current.pause();
-    if (!showButtonControls) {
+    if (!isShowButtonControls) {
       videoRef.current.load();
     }
-  }, [isPlaying, showButtonControls]);
-
+  },[isPlaying, isShowButtonControls]);
   useEffect(() => {
-    if (!showButtonControls) {
+    if (!isShowButtonControls) {
       return;
     }
 
@@ -97,9 +96,10 @@ function VideoPlayer({
         className="player__video"
         poster={previewImage}
         ref={videoRef}
-        muted={muted}
+        muted={isMuted}
       />
-      {showButtonControls &&
+      {isShowButtonControls &&
+
       <>
         <button
           type="button"
@@ -123,7 +123,7 @@ function VideoPlayer({
               type="button"
               className="player__play"
               disabled={isLoading}
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={onPlayButtonClick}
             >
               <svg viewBox="0 0 19 19" width="19" height="19">
                 <use xlinkHref="#play-s"></use>

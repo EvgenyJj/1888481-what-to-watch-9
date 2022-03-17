@@ -14,10 +14,10 @@ function Player(): JSX.Element {
   return(
     <div className="player">
       <VideoPlayer
-        autoPlay={false}
+        isPlaying={false}
         video={film}
-        showButtonControls
-        muted
+        isShowButtonControls
+        isMuted
         onExit={() => navigate(-1)}
       />
     </div>
