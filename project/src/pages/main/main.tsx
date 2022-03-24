@@ -3,6 +3,7 @@ import FilmPromo from '../../components/film-promo/film-promo';
 import GenreList from '../../components/genre-list/genre-list';
 import Logo from '../../components/logo/logo';
 import User from '../../components/user/user';
+import {ALL_GENRES} from '../../const';
 import {filterFilms} from '../../store/action';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
@@ -10,7 +11,22 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
   const {films, filteredFilms} = useAppSelector((state) => state);
-  const genres = useAppSelector((state) => state);
+  const getToUniqueKeys = (
+    array: {[key: string]: any}[],
+    key: string,
+    initialValue = '',
+  ): string[] => (
+    array
+      .map((item) => item[key])
+      .reduce((uniqueKeys: string[], current) => {
+        if (!uniqueKeys.includes(current)) {
+          uniqueKeys.push(current);
+        }
+        return uniqueKeys;
+      }, [initialValue])
+  );
+  const genres = getToUniqueKeys(films, 'genre', ALL_GENRES);
+
   return (
     <>
       <FilmPromo film={films[5]}>
