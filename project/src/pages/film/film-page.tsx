@@ -3,13 +3,14 @@ import Logo from '../../components/logo/logo';
 import PageNotFound from '../../components/page-not-found/page-not-found';
 import User from '../../components/user/user';
 import {AppRoute} from '../../const';
-import {films} from '../../mocks/films';
 import {reviews} from '../../mocks/reviews';
 import {useParams, useNavigate, Link} from 'react-router-dom';
+import { useAppSelector } from '../../hooks';
 
 function FilmPage(): JSX.Element {
   const navigate = useNavigate();
   const {id: idParams} = useParams();
+  const {films} = useAppSelector((state) => state);
   const film = films.find(({id}) => id.toString() === idParams);
 
   if (film === undefined) {
@@ -17,6 +18,7 @@ function FilmPage(): JSX.Element {
   }
 
   const reviewersCount = reviews.length;
+  const similarFilms = films.filter(({genre}) => genre === film.genre);
   const onClickPlay = () => navigate(`/player/${idParams}`);
   const onClickAdd = () => navigate(AppRoute.MyList);
 
@@ -105,7 +107,7 @@ function FilmPage(): JSX.Element {
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
 
-          <FilmList films={films} />
+          <FilmList films={similarFilms} />
         </section>
 
         <footer className="page-footer">

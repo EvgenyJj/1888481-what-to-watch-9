@@ -1,104 +1,49 @@
 import FilmList from '../../components/film-list/film-list';
+import FilmPromo from '../../components/film-promo/film-promo';
+import GenreList from '../../components/genre-list/genre-list';
 import Logo from '../../components/logo/logo';
 import User from '../../components/user/user';
-import {AppRoute} from '../../const';
-import {Film} from '../../types/film';
-import {useNavigate} from 'react-router-dom';
+import {ALL_GENRES} from '../../const';
+import {filterFilms} from '../../store/action';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
-type MainPageProps = {
-  films: Film[],
-}
 
-function MainPage({films}: MainPageProps): JSX.Element {
-  const {backgroundImage, genre, name, posterImage, released, id} = films[5];
-  const navigate = useNavigate();
-  const onClickPlay = () => navigate(`/player/${id}`);
-  const onClickAdd = () => navigate(AppRoute.MyList);
+function MainPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const {films, filteredFilms} = useAppSelector((state) => state);
+  const getToUniqueKeys = (
+    array: {[key: string]: any}[],
+    key: string,
+    initialValue = '',
+  ): string[] => (
+    array
+      .map((item) => item[key])
+      .reduce((uniqueKeys: string[], current) => {
+        if (!uniqueKeys.includes(current)) {
+          uniqueKeys.push(current);
+        }
+        return uniqueKeys;
+      }, [initialValue])
+  );
+  const genres = getToUniqueKeys(films, 'genre', ALL_GENRES);
 
   return (
     <>
-      <section className="film-card">
-        <div className="film-card__bg">
-          <img src={backgroundImage} alt={name} />
-        </div>
-
-        <h1 className="visually-hidden">WTW</h1>
-
+      <FilmPromo film={films[5]}>
         <header className="page-header film-card__head">
           <Logo />
           <User />
         </header>
-
-        <div className="film-card__wrap">
-          <div className="film-card__info">
-            <div className="film-card__poster">
-              <img src={posterImage} alt={name} width="218" height="327" />
-            </div>
-
-            <div className="film-card__desc">
-              <h2 className="film-card__title">{name}</h2>
-              <p className="film-card__meta">
-                <span className="film-card__genre">{genre}</span>
-                <span className="film-card__year">{released}</span>
-              </p>
-
-              <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button" onClick={onClickPlay}>
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list film-card__button" type="button" onClick={onClickAdd}>
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
-                  <span>My list</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </FilmPromo>
 
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="/#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="/#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+          <GenreList genres={genres} onChange={() => dispatch(filterFilms())} />
+
           <div className="catalog__films-list">
-            <FilmList films={films} />
+            <FilmList films={filteredFilms} />
           </div>
 
           <div className="catalog__more">
