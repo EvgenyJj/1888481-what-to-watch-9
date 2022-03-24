@@ -1,147 +1,46 @@
-import {Film} from '../../types/film';
-import {useState, useEffect, useRef} from 'react';
+import {TIMER_DELAY} from '../../const';
+import {useEffect, useRef} from 'react';
 
 type VideoPlayerProps = {
   isMuted?: boolean;
   isPlaying: boolean;
-  isShowButtonControls?: boolean;
-  onExit?: () => void;
-  onPlayButtonClick?: () => void;
-  video: Film;
+  poster: string;
+  src: string;
 }
 
-function VideoPlayer({
-  isMuted,
-  isPlaying,
-  isShowButtonControls,
-  onExit,
-  onPlayButtonClick,
-  video}: VideoPlayerProps): JSX.Element {
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentProgress, setCurrentProgress] = useState(0);
-  const {name, videoLink, previewImage} = video;
+function VideoPlayer({isMuted, isPlaying, poster, src}: VideoPlayerProps): JSX.Element {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  useEffect(() => {
-    if (videoRef.current !== null) {
-      videoRef.current.onloadeddata = () => setIsLoading(false);
-    }
-
-    return () => {
-      if (videoRef.current !== null) {
-        videoRef.current.onloadeddata = null;
-        videoRef.current = null;
-      }
-    };
-  }, [videoLink]);
 
   useEffect(() => {
     if (videoRef.current === null) {
       return;
     }
 
-    if (isPlaying) {
-      videoRef.current.play();
-      return;
+    const currentCardFilm = videoRef.current;
+
+    let timer: ReturnType<typeof setTimeout>;
+
+    if(isPlaying) {
+      timer = setTimeout( () => {
+        currentCardFilm.play();
+      }, TIMER_DELAY);
     }
 
-    videoRef.current.pause();
-    if (!isShowButtonControls) {
-      videoRef.current.load();
-    }
-  },[isPlaying, isShowButtonControls]);
-  useEffect(() => {
-    if (!isShowButtonControls) {
-      return;
-    }
-
-    const fullScreenBtn = document.querySelector('.player__full-screen') as HTMLButtonElement;
-
-    const onFullScreenClick = () => {
-      if (document.fullscreenElement === undefined) {
-        document.documentElement.requestFullscreen();
-        return;
-      }
-
-      if (document.exitFullscreen !== undefined) {
-        document.exitFullscreen();
-      }
+    return () => {
+      clearTimeout(timer);
+      currentCardFilm.load();
     };
-
-    fullScreenBtn.addEventListener('click', onFullScreenClick);
-
-    return () => fullScreenBtn.removeEventListener('click', onFullScreenClick);
-  });
-
-  useEffect(() => {
-    const onPlaying = ():void => {
-      if (videoRef.current !== null) {
-        setCurrentProgress(videoRef.current.currentTime / videoRef.current.duration * 100);
-        return;
-      }
-
-      setCurrentProgress(0);
-    };
-
-    if (videoRef.current !== null) {
-      videoRef.current.onplaying = onPlaying;
-    }
-  });
+  }, [isPlaying]);
 
   return (
-    <>
-      <video
-        src={videoLink}
-        className="player__video"
-        poster={previewImage}
-        ref={videoRef}
-        muted={isMuted}
-      />
-      {isShowButtonControls &&
-
-      <>
-        <button
-          type="button"
-          className="player__exit"
-          onClick={onExit}
-        >
-          Exit
-        </button>
-
-        <div className="player__controls">
-          <div className="player__controls-row">
-            <div className="player__time">
-              <progress className="player__progress" value={currentProgress} max="100"></progress>
-              <div className="player__toggler" style={{left: `${currentProgress}%`}}>Toggler</div>
-            </div>
-            <div className="player__time-value">{videoRef.current?.duration}</div>
-          </div>
-
-          <div className="player__controls-row">
-            <button
-              type="button"
-              className="player__play"
-              disabled={isLoading}
-              onClick={onPlayButtonClick}
-            >
-              <svg viewBox="0 0 19 19" width="19" height="19">
-                <use xlinkHref="#play-s"></use>
-              </svg>
-              <span>Play</span>
-            </button>
-            <div className="player__name">{name}</div>
-
-            <button type="button" className="player__full-screen">
-              <svg viewBox="0 0 27 27" width="27" height="27">
-                <use xlinkHref="#full-screen"></use>
-              </svg>
-              <span>Full screen</span>
-            </button>
-          </div>
-        </div>
-      </>}
-    </>
+    <video
+      className="player__video"
+      muted={isMuted}
+      poster={poster}
+      ref={videoRef}
+      src={src}
+    />
   );
 }
 

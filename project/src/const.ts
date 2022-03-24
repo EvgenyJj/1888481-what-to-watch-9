@@ -14,3 +14,5 @@ export enum AuthorizationStatus {
 }
 
 export const TIMER_DELAY = 1000;
+
+export const ALL_GENRES = 'All genres';

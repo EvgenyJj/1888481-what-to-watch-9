@@ -1,43 +1,26 @@
 import VideoPlayer from '../video-player/video-player';
 import {Film} from '../../types/film';
 import {Link} from 'react-router-dom';
-import {useState, useEffect} from 'react';
-import {TIMER_DELAY} from '../../const';
 
 type FilmCardProps = {
   film: Film,
+  isActive: boolean
+  onHover: (id: number | null) => void,
 }
 
-function FilmCard({film}: FilmCardProps): JSX.Element {
+function FilmCard({film, isActive, onHover}: FilmCardProps): JSX.Element {
   const {id, name} = film;
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    if (!isHovered) {
-      setIsPlaying(false);
-      return;
-    }
-
-    const timerId = setTimeout(() => setIsPlaying(true), TIMER_DELAY);
-
-    return () => {
-      clearInterval(timerId);
-    };
-
-  }, [isHovered]);
-
   return (
     <article className="small-film-card catalog__films-card"
-      onMouseOver={() => setIsHovered(true)}
-      onMouseOut={() => setIsHovered(false)}
+      onMouseOver={() => onHover(id)}
+      onMouseOut={() => onHover(null)}
     >
       <div className="small-film-card__image">
         <VideoPlayer
-          isPlaying={isPlaying}
-          video={film}
-          onPlayButtonClick={() => setIsPlaying(!isPlaying)}
           isMuted
+          isPlaying={isActive}
+          poster={film.previewImage}
+          src={film.videoLink}
         />
       </div>
       <h3 className="small-film-card__title">

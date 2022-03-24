@@ -7,14 +7,11 @@ import Player from '../../pages/player/player';
 import PrivateRoute from  '../private-route/private-route';
 import SignIn from '../../pages/sign-in/sign-in';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {Film} from '../../types/film';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
 
-type AppProps = {
-  films: Film[],
-}
-
-function App({films}: AppProps): JSX.Element {
+function App(): JSX.Element {
+  const films = useAppSelector((state) => state.films);
   const favorite = films.filter(({isFavorite}) => isFavorite);
   return (
     <BrowserRouter>
@@ -22,9 +19,7 @@ function App({films}: AppProps): JSX.Element {
         <Route
           path={AppRoute.Main}
           element={
-            <MainPage
-              films={films}
-            />
+            <MainPage />
           }
         />
         <Route
