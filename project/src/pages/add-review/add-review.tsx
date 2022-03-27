@@ -3,11 +3,12 @@ import PageNotFound from '../../components/page-not-found/page-not-found';
 import ReviewForm from '../../components/review-form/review-form';
 import User from '../../components/user/user';
 import {Link} from 'react-router-dom';
-import {films} from '../../mocks/films';
 import {useParams} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
 
 function AddReview(): JSX.Element {
   const {id: idParams} = useParams();
+  const films = useAppSelector((state) => state.films);
   const film = films.find(({id}) => id.toString() === idParams);
   if (film === undefined) {
     return <PageNotFound />;

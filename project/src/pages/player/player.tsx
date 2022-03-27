@@ -1,9 +1,10 @@
 import PageNotFound from '../../components/page-not-found/page-not-found';
-import {films} from '../../mocks/films';
 import {useParams} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
 
 function Player(): JSX.Element {
   const {id: idParams} = useParams();
+  const films = useAppSelector((state) => state.films);
   const film = films.find(({id}) => id.toString() === idParams);
   if (film === undefined) {
     return (<PageNotFound />);

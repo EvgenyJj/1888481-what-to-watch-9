@@ -5,7 +5,7 @@ import User from '../../components/user/user';
 import {AppRoute} from '../../const';
 import {reviews} from '../../mocks/reviews';
 import {useParams, useNavigate, Link} from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
+import {useAppSelector} from '../../hooks';
 
 function FilmPage(): JSX.Element {
   const navigate = useNavigate();
