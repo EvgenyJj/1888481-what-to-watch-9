@@ -1,5 +1,6 @@
 import AddReview from '../../pages/add-review/add-review';
 import FilmPage from '../../pages/film/film-page';
+import Loading from '../loading/loading';
 import MainPage from '../../pages/main/main';
 import MyList from '../../pages/my-list/my-list';
 import PageNotFound from '../page-not-found/page-not-found';
@@ -13,6 +14,15 @@ import {useAppSelector} from '../../hooks';
 function App(): JSX.Element {
   const films = useAppSelector((state) => state.films);
   const favorite = films.filter(({isFavorite}) => isFavorite);
+
+  const {isDataLoaded} = useAppSelector((state) => state);
+
+  if (!isDataLoaded) {
+    return (
+      <Loading />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
