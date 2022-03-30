@@ -1,5 +1,10 @@
+import {AppRoute} from '../../const';
+import {Route, Routes} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
 import AddReview from '../../pages/add-review/add-review';
+import browserHistory from '../../services/browser-history';
 import FilmPage from '../../pages/film/film-page';
+import HistoryRouter from '../history-route/history-route';
 import Loading from '../loading/loading';
 import MainPage from '../../pages/main/main';
 import MyList from '../../pages/my-list/my-list';
@@ -7,12 +12,9 @@ import PageNotFound from '../page-not-found/page-not-found';
 import Player from '../../pages/player/player';
 import PrivateRoute from  '../private-route/private-route';
 import SignIn from '../../pages/sign-in/sign-in';
-import {AppRoute, AuthorizationStatus} from '../../const';
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import {useAppSelector} from '../../hooks';
 
 function App(): JSX.Element {
-  const films = useAppSelector((state) => state.films);
+  const {films, authorizationStatus} = useAppSelector((state) => state);
   const favorite = films.filter(({isFavorite}) => isFavorite);
 
   const {isDataLoaded} = useAppSelector((state) => state);
@@ -24,7 +26,7 @@ function App(): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Main}
@@ -40,7 +42,7 @@ function App(): JSX.Element {
           path={AppRoute.MyList}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus={authorizationStatus}
             >
               <MyList
                 favorite={favorite}
@@ -71,7 +73,7 @@ function App(): JSX.Element {
           element={<PageNotFound />}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

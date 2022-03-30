@@ -16,4 +16,4 @@ export type Film = {
   scoresCount: number,
   starring: string[],
   videoLink: string,
-}
+};
