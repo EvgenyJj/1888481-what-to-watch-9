@@ -1,4 +1,4 @@
-import {AuthorizationStatus, AppRoute} from '../const';
+import {AuthorizationStatus, AppRoute, ViewLink} from '../const';
 import {createAction} from '@reduxjs/toolkit';
 import {Film} from '../types/film';
 import {User} from '../types/user';
@@ -14,3 +14,7 @@ export const requireAuthStatus = createAction<AuthorizationStatus>('user/changeA
 export const loadUserInfo = createAction<User>('user/loadInfo');
 
 export const redirectToRoute = createAction<AppRoute>('game/redirectToRoute');
+
+export const loadFavoriteFilms = createAction<Film[]>('data/loadFavoriteFilms');
+
+export const selectViewLink = createAction('selectionLink', (link: ViewLink) => ({payload: link}));

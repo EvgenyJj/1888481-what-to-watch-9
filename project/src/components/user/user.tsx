@@ -1,7 +1,8 @@
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, ViewLink} from '../../const';
 import {Link} from 'react-router-dom';
-import {logoutAction} from '../../store/api-actions';
+import {logoutAction, fetchFavoriteFilmAction} from '../../store/api-actions';
 import {useAppSelector, useAppDispatch} from '../../hooks';
+import {selectViewLink} from '../../store/action';
 
 function User(): JSX.Element {
   const {authorizationStatus, user} = useAppSelector((state) => state);
@@ -10,7 +11,15 @@ function User(): JSX.Element {
     <ul className="user-block">
       <li className="user-block__item">
         <div className="user-block__avatar">
-          <img src={user?.avatarUrl} alt="User avatar" width="63" height="63" />
+          <Link
+            to={AppRoute.MyList}
+            onClick={() => {
+              dispatch(selectViewLink(ViewLink.List));
+              dispatch(fetchFavoriteFilmAction());
+            }}
+          >
+            <img src={user?.avatarUrl} alt="User avatar" width="63" height="63" />
+          </Link>
         </div>
       </li>
       <li className="user-block__item">

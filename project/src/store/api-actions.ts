@@ -5,7 +5,7 @@ import {createAsyncThunk } from '@reduxjs/toolkit';
 import {dropToken, saveToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
 import {Film} from '../types/film';
-import {loadFilms, filterFilms, requireAuthStatus, loadUserInfo, redirectToRoute} from './action';
+import {loadFilms, filterFilms, requireAuthStatus, loadUserInfo, redirectToRoute, loadFavoriteFilms} from './action';
 import {UserData} from '../types/user-data';
 
 export const fetchFilmAction = createAsyncThunk(
@@ -62,3 +62,14 @@ export const logoutAction = createAsyncThunk(
     }
   },
 );
+
+export const fetchFavoriteFilmAction = createAsyncThunk(
+  'data/fetchFavoriteFilms',
+  async () => {
+    try {
+      const {data} = await api.get<Film[]>(APIRoute.Favorite());
+      store.dispatch(loadFavoriteFilms(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  });

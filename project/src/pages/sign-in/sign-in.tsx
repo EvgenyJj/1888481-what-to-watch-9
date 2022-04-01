@@ -21,8 +21,8 @@ function SignIn(): JSX.Element {
 
     if (loginRef.current !== null && passwordRef.current !== null) {
 
-      const login = loginRef.current.value;
-      const password = passwordRef.current.value;
+      const login = loginRef.current.value.trim();
+      const password = passwordRef.current.value.trim();
 
       if (login === '' || password === '') {
         toast.error('Email and password cannot be empty.');
