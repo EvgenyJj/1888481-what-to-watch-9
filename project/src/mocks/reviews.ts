@@ -9,6 +9,8 @@ export const reviews: Review[] = [
     user: {
       id: 3,
       name: 'Kate Muir',
+      avatarUrl: '',
+      email: 'asd',
     },
   },
   {
@@ -19,6 +21,8 @@ export const reviews: Review[] = [
     user: {
       id: 5,
       name: 'Bill Goodykoontz',
+      avatarUrl: '',
+      email: 'asd',
     },
   },
   {
@@ -29,6 +33,8 @@ export const reviews: Review[] = [
     user: {
       id: 7,
       name: 'Amanda Greever',
+      avatarUrl: '',
+      email: 'asd',
     },
   },
   {
@@ -39,6 +45,8 @@ export const reviews: Review[] = [
     user: {
       id: 9,
       name: 'Matthew Lickona',
+      avatarUrl: '',
+      email: 'asd',
     },
   },
   {
@@ -49,6 +57,8 @@ export const reviews: Review[] = [
     user: {
       id: 11,
       name: 'Paula Fleri-Soler',
+      avatarUrl: '',
+      email: 'asd',
     },
   },
 ];
