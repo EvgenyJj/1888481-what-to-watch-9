@@ -3,25 +3,26 @@ import {Film} from '../../types/film';
 import {useState} from 'react';
 
 type FilmListProps = {
-  films: Film[]
+  films: Film[],
 }
 
 function FilmList({films}: FilmListProps): JSX.Element {
   const [activeId, setActiveId] = useState<number | null>(null);
 
   return (
-    <div className="catalog__films-list">
-      {
-        films.map((film) => (
+    <>
+      <h2 className="catalog__title">More like this</h2>
+      <div className="catalog__films-list">
+        {films.map((film) => (
           <FilmCard
+            key={film.id}
             film={film}
             isActive={film.id === activeId}
-            key={film.id}
             onHover={setActiveId}
           />
-        ))
-      }
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
 
