@@ -3,7 +3,8 @@ import FilmPromo from '../../components/film-promo/film-promo';
 import GenreList from '../../components/genre-list/genre-list';
 import Logo from '../../components/logo/logo';
 import User from '../../components/user/user';
-import {ALL_GENRES} from '../../const';
+import UseShowMoreButton from '../../hooks/use-show-more-button/use-show-more-button';
+import {ALL_GENRES, MAX_CARD_SHOW_COUNT} from '../../const';
 import {filterFilms} from '../../store/action';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
@@ -26,6 +27,7 @@ function MainPage(): JSX.Element {
       }, [initialValue])
   );
   const genres = getToUniqueKeys(films, 'genre', ALL_GENRES);
+  const [visibleFilms, isButtonShown, showMore] = UseShowMoreButton(filteredFilms, MAX_CARD_SHOW_COUNT);
 
   return (
     <>
@@ -43,11 +45,18 @@ function MainPage(): JSX.Element {
           <GenreList genres={genres} onChange={() => dispatch(filterFilms())} />
 
           <div className="catalog__films-list">
-            <FilmList films={filteredFilms} />
+            <FilmList films={visibleFilms} />
           </div>
 
           <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
+            {isButtonShown &&
+            <button
+              className="catalog__button"
+              type="button"
+              onClick={showMore}
+            >
+              Show more
+            </button> }
           </div>
         </section>
 
