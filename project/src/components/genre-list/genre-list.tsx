@@ -1,4 +1,4 @@
-import {changeGenre, resetShowedCardCount} from '../../store/action';
+import {changeGenre} from '../../store/action';
 import {MouseEvent} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
@@ -14,7 +14,6 @@ function GenreList({genres, onChange}: GenreListProps): JSX.Element {
   const genreClickHandler = (evt: MouseEvent<HTMLAnchorElement>, genre: string) => {
     evt.preventDefault();
     dispatch(changeGenre(genre));
-    dispatch(resetShowedCardCount());
     onChange();
   };
 

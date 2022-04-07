@@ -14,7 +14,3 @@ export const requireAuthStatus = createAction<AuthorizationStatus>('user/changeA
 export const loadUserInfo = createAction<User>('user/loadInfo');
 
 export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
-
-export const showMore = createAction('showMore');
-
-export const resetShowedCardCount = createAction('resetShowedCardCount');
