@@ -5,7 +5,7 @@ import FilmList from '../../components/film-list/film-list';
 import FilmPromo from '../../components/film-promo/film-promo';
 import GenreList from '../../components/genre-list/genre-list';
 import Logo from '../../components/logo/logo';
-import ShowMoreButton from '../../components/show-more-button/show-more-button';
+//import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import User from '../../components/user/user';
 import UseShowMoreButton from '../../hooks/use-show-more-button/use-show-more-button';
 
@@ -50,11 +50,11 @@ function MainPage(): JSX.Element {
 
           <div className="catalog__more">
             {isButtonShown &&
-            <ShowMoreButton
+            <button
               onClick={clickShowMoreHandlear}
             >
               Show more
-            </ShowMoreButton> }
+            </button> }
           </div>
         </section>
 
