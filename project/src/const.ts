@@ -17,7 +17,7 @@ export const TIMER_DELAY = 1000;
 export const MINS_PER_HOUR = 60;
 export const REVIEWS_COL_COUNT = 2;
 export const MAX_SIMILAR_COUNT = 4;
-export const DEFAULT_SHOW_COUNT = 8;
+export const MAX_CARD_SHOW_COUNT = 8;
 
 export const ALL_GENRES = 'All genres';
 
