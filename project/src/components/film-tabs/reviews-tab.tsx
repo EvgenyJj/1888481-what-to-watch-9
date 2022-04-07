@@ -23,4 +23,3 @@ function ReviewsTab({reviews}: ReviewsTabProps): JSX.Element {
 }
 
 export default ReviewsTab;
-

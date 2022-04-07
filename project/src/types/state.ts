@@ -9,6 +9,7 @@ export type State = {
   filteredFilms: Film[],
   genre: string,
   isDataLoaded: boolean,
+  showedCardsCount: number,
   user: User | null
 };
 
