@@ -5,7 +5,7 @@ import FilmList from '../../components/film-list/film-list';
 import FilmPromo from '../../components/film-promo/film-promo';
 import GenreList from '../../components/genre-list/genre-list';
 import Logo from '../../components/logo/logo';
-//import ShowMoreButton from '../../components/show-more-button/show-more-button';
+import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import User from '../../components/user/user';
 import UseShowMoreButton from '../../hooks/use-show-more-button/use-show-more-button';
 
@@ -27,7 +27,7 @@ function MainPage(): JSX.Element {
       }, [initialValue])
   );
   const genres = getToUniqueKeys(films, 'genre', ALL_GENRES);
-  const [visibleFilms, isButtonShown, clickShowMoreHandlear] = UseShowMoreButton(filteredFilms, MAX_CARD_SHOW_COUNT);
+  const [visibleFilms, isButtonShown, handleShowMoreButtonClick] = UseShowMoreButton(filteredFilms, MAX_CARD_SHOW_COUNT);
 
   return (
     <>
@@ -45,16 +45,13 @@ function MainPage(): JSX.Element {
           <GenreList genres={genres} onChange={() => dispatch(filterFilms())} />
 
           <div className="catalog__films-list">
+            <h2 className="catalog__title">More like this</h2>
             <FilmList films={visibleFilms} />
           </div>
 
           <div className="catalog__more">
             {isButtonShown &&
-            <button
-              onClick={clickShowMoreHandlear}
-            >
-              Show more
-            </button> }
+            <ShowMoreButton onClick={handleShowMoreButtonClick} /> }
           </div>
         </section>
 
