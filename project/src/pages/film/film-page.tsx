@@ -11,7 +11,7 @@ import {MAX_SIMILAR_COUNT} from '../../const';
 function FilmPage(): JSX.Element {
   const navigate = useNavigate();
   const params = useParams();
-  const {films} = useAppSelector((state) => state);
+  const {films, user} = useAppSelector((state) => state);
   const currentFilm = films.find((film) => film.id === Number(params.id));
 
   if (currentFilm === undefined) {
@@ -58,7 +58,13 @@ function FilmPage(): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${currentFilm.id}/review`} className="btn film-card__button">Add review</Link>
+                {user !== null &&
+                  <Link
+                    to={`/films/${currentFilm.id}/review`}
+                    className="btn film-card__button"
+                  >
+                     Add review
+                  </Link>}
               </div>
             </div>
           </div>

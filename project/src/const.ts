@@ -4,7 +4,7 @@ export enum AppRoute {
   MyList = '/mylist',
   Film = '/films/:id',
   AddReview = '/films/:id/review',
-  Player = '/player/:id'
+  Player = '/player/:id',
 }
 
 export enum AuthorizationStatus {
@@ -18,13 +18,17 @@ export const MINS_PER_HOUR = 60;
 export const REVIEWS_COL_COUNT = 2;
 export const MAX_SIMILAR_COUNT = 4;
 export const MAX_CARD_SHOW_COUNT = 8;
+export const FILM_SCORE = 10;
+export const REVIEW_LENGTH_MIN = 50;
+export const REVIEW_LENGTH_MAX = 400;
 
 export const ALL_GENRES = 'All genres';
 
 export enum APIRoute {
   Films = '/films',
   Login = '/login',
-  Logout = 'logout',
+  Logout = '/logout',
+  Comments = '/comments',
 }
 
 export enum HTTP_CODE {

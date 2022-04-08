@@ -4,6 +4,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import FilmList from '../../components/film-list/film-list';
 import FilmPromo from '../../components/film-promo/film-promo';
 import GenreList from '../../components/genre-list/genre-list';
+import Loading from '../../components/loading/loading';
 import Logo from '../../components/logo/logo';
 import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import User from '../../components/user/user';
@@ -11,7 +12,7 @@ import UseShowMoreButton from '../../hooks/use-show-more-button/use-show-more-bu
 
 function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const {films, filteredFilms} = useAppSelector((state) => state);
+  const {films, filteredFilms, isLoading} = useAppSelector((state) => state);
   const getToUniqueKeys = (
     array: {[key: string]: any}[],
     key: string,
@@ -28,6 +29,12 @@ function MainPage(): JSX.Element {
   );
   const genres = getToUniqueKeys(films, 'genre', ALL_GENRES);
   const [visibleFilms, isButtonShown, handleShowMoreButtonClick] = UseShowMoreButton(filteredFilms, MAX_CARD_SHOW_COUNT);
+
+  if (isLoading) {
+    return (
+      <Loading />
+    );
+  }
 
   return (
     <>

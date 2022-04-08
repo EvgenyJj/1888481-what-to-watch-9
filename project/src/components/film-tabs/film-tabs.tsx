@@ -2,7 +2,7 @@ import {Film} from '../../types/film';
 import {ItemTabs} from '../../const';
 import {Link} from 'react-router-dom';
 import {MouseEvent, useState} from 'react';
-import {reviews} from '../../mocks/reviews';
+import {useAppSelector} from '../../hooks';
 import FilmDetailsTab from './details-tab';
 import FilmOverviewTab from './overview-tab';
 import ReviewsTab from './reviews-tab';
@@ -13,7 +13,7 @@ type FilmTabsProps = {
 
 function FilmTabs({film}: FilmTabsProps) {
   const [current, setCurrent] = useState<string>(ItemTabs.Overview);
-
+  const {reviews} = useAppSelector((state) => state);
   const tabClickHandler = (evt: MouseEvent<HTMLAnchorElement>, tab: string) => {
     evt.preventDefault();
     setCurrent(tab);
