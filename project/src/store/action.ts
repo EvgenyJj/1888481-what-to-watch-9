@@ -1,4 +1,4 @@
-import {AuthorizationStatus, AppRoute} from '../const';
+import {AuthorizationStatus} from '../const';
 import {createAction} from '@reduxjs/toolkit';
 import {Film} from '../types/film';
 import {Review} from '../types/review';
@@ -14,7 +14,7 @@ export const requireAuthStatus = createAction<AuthorizationStatus>('user/require
 
 export const loadUserInfo = createAction<User | null>('user/loadInfo');
 
-export const redirectToRoute = createAction<AppRoute>('app/redirectToRoute');
+export const redirectToRoute = createAction<string>('app/redirectToRoute');
 
 export const loadReviews = createAction<Review[]>('films/loadReviews');
 
