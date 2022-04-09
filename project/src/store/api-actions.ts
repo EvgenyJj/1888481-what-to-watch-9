@@ -5,7 +5,7 @@ import {createAsyncThunk } from '@reduxjs/toolkit';
 import {dropToken, saveToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
 import {Film} from '../types/film';
-import {loadFilms, filterFilms, requireAuthStatus, loadUserInfo, redirectToRoute, changeLoadingStatus, loadReviews} from './action';
+import {loadFilms, filterFilms, requireAuthStatus, loadUserInfo, redirectToRoute, changeLoadingStatus, loadReviews, loadSimilarFilms, loadCurrentFilm} from './action';
 import {Review} from '../types/review';
 import {ReviewData} from '../types/review-data';
 import {UserData} from '../types/user-data';
@@ -93,6 +93,31 @@ export const postReviewAction = createAsyncThunk(
     } catch (error) {
       errorHandle(error);
       store.dispatch(changeLoadingStatus(false));
+    }
+  },
+);
+
+export const fetchSimilarFilmsAction = createAsyncThunk(
+  'data/fetchSimilarFilms',
+  async (id: number) => {
+    try {
+      const {data} = await api.get<Film[]>(`${APIRoute.Films}/${id}${APIRoute.Similar}`);
+      store.dispatch(loadSimilarFilms(data));
+    } catch (err) {
+      errorHandle(err);
+    }
+  },
+);
+
+export const fetchCurrentFilmAction = createAsyncThunk(
+  'data/fetchCurrentFilm',
+  async (id: number) => {
+    try {
+      const {data} = await api.get<Film>(`${APIRoute.Films}/${id}`);
+      store.dispatch(loadCurrentFilm(data));
+    } catch (error) {
+      errorHandle(error);
+      store.dispatch(loadCurrentFilm(undefined));
     }
   },
 );

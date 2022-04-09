@@ -1,5 +1,5 @@
 import {ALL_GENRES, AuthorizationStatus} from '../const';
-import {changeGenre, requireAuthStatus, filterFilms, loadFilms, loadUserInfo, loadReviews, changeLoadingStatus} from './action';
+import {changeGenre, requireAuthStatus, filterFilms, loadFilms, loadUserInfo, loadReviews, changeLoadingStatus, loadSimilarFilms, loadCurrentFilm} from './action';
 import {createReducer} from '@reduxjs/toolkit';
 import {State} from '../types/state';
 
@@ -9,8 +9,10 @@ const initialState: State = {
   filteredFilms: [],
   genre: ALL_GENRES,
   isLoading: false,
-  user: null,
   reviews: [],
+  similarFilms: [],
+  user: null,
+  currentFilm: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -34,6 +36,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadReviews, (state: State, {payload}) => {
       state.reviews = payload;
+    })
+    .addCase(loadSimilarFilms, (state: State, {payload}) => {
+      state.similarFilms = payload;
+    })
+    .addCase(loadCurrentFilm, (state, action) => {
+      state.currentFilm = action.payload;
     })
     .addCase(changeLoadingStatus, (state, action) => {
       state.isLoading = action.payload;

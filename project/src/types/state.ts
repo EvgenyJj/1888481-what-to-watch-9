@@ -11,7 +11,9 @@ export type State = {
   genre: string,
   isLoading: boolean,
   reviews: Review[],
+  similarFilms: Film[],
   user: User | null,
+  currentFilm: Film | null | undefined,
 };
 
 export type AppDispatch = typeof store.dispatch;

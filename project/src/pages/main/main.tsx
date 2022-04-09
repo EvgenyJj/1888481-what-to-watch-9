@@ -52,7 +52,6 @@ function MainPage(): JSX.Element {
           <GenreList genres={genres} onChange={() => dispatch(filterFilms())} />
 
           <div className="catalog__films-list">
-            <h2 className="catalog__title">More like this</h2>
             <FilmList films={visibleFilms} />
           </div>
 

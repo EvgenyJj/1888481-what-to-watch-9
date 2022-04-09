@@ -29,6 +29,7 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
+  Similar = '/similar',
 }
 
 export enum HTTP_CODE {
