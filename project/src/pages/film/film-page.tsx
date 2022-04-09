@@ -12,7 +12,8 @@ import PageNotFound from '../../components/page-not-found/page-not-found';
 import User from '../../components/user/user';
 
 function FilmPage(): JSX.Element {
-  const {currentFilm, similarFilms, reviews, authorizationStatus} = useAppSelector((state) => state);
+  const {currentFilm, similarFilms, reviews} = useAppSelector(({FILMS}) => FILMS);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();

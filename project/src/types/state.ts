@@ -1,19 +1,29 @@
-import {Film} from './film';
-import {store} from '../store';
 import {AuthorizationStatus} from '../const';
-import {User} from './user';
+import {Film} from './film';
 import {Review} from './review';
+import {store} from '../store';
+import {User} from './user';
 
-export type State = {
+export type UserData = {
   authorizationStatus: AuthorizationStatus,
+  user: User | null
+};
+
+export type FilmsData = {
+  currentFilm: Film | null | undefined,
+  favoriteFilms: Film[],
   films: Film[],
   filteredFilms: Film[],
   genre: string,
-  isLoading: boolean,
+  promoFilm: Film | null,
   reviews: Review[],
-  similarFilms: Film[],
-  user: User | null,
-  currentFilm: Film | null | undefined,
+  similarFilms: Film[]
 };
+
+export type AppSettings = {
+  isLoading: boolean
+}
+
+export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
