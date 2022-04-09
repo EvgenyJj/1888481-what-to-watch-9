@@ -6,6 +6,7 @@ type FilmOverviewProps = {
 }
 
 function FilmOverviewTab({film}: FilmOverviewProps): JSX.Element {
+
   function NameScoreRating(rating: number): RatingName | null {
     if (rating > 0 && rating < 3) {
       return RatingName.Bad;
@@ -24,6 +25,7 @@ function FilmOverviewTab({film}: FilmOverviewProps): JSX.Element {
     }
     return null;
   }
+
   return (
     <>
       <div className="film-rating">

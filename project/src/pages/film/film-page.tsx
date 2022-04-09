@@ -1,24 +1,40 @@
-import {AppRoute} from '../../const';
+import {AppRoute, AuthorizationStatus, MAX_SIMILAR_COUNT} from '../../const';
+import {fetchSimilarFilmsAction, fetchReviewsAction, fetchCurrentFilmAction} from '../../store/api-actions';
 import {useAppSelector} from '../../hooks';
+import {useDispatch} from 'react-redux';
+import {useEffect} from 'react';
 import {useParams, useNavigate, Link} from 'react-router-dom';
 import FilmList from '../../components/film-list/film-list';
 import FilmTabs from '../../components/film-tabs/film-tabs';
+import Loading from '../../components/loading/loading';
 import Logo from '../../components/logo/logo';
 import PageNotFound from '../../components/page-not-found/page-not-found';
 import User from '../../components/user/user';
-import {MAX_SIMILAR_COUNT} from '../../const';
 
 function FilmPage(): JSX.Element {
+  const {currentFilm, similarFilms, reviews, authorizationStatus} = useAppSelector((state) => state);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const params = useParams();
-  const {films} = useAppSelector((state) => state);
-  const currentFilm = films.find((film) => film.id === Number(params.id));
+  const currentFilmId = Number(params.id);
+
+  useEffect(() => {
+    if (currentFilm === null || currentFilm?.id !== currentFilmId) {
+      dispatch(fetchCurrentFilmAction(currentFilmId));
+      dispatch(fetchSimilarFilmsAction(currentFilmId));
+      dispatch(fetchReviewsAction(currentFilmId));
+    }
+  }, [currentFilm, currentFilmId, dispatch]);
 
   if (currentFilm === undefined) {
     return <PageNotFound />;
   }
 
-  const similarFilms = films.filter((film) => film.genre === currentFilm.genre && film.id !== currentFilm.id).slice(0, MAX_SIMILAR_COUNT);
+  if (currentFilm === null || currentFilm.id !== currentFilmId) {
+    return <Loading />;
+  }
+
+  const similarFilmsList = similarFilms.filter((film) => film.genre === currentFilm.genre && film.id !== currentFilm.id).slice(0, MAX_SIMILAR_COUNT);
   const onClickPlay = () => navigate(`/player/${currentFilm.id}`);
   const onClickAdd = () => navigate(AppRoute.MyList);
 
@@ -58,7 +74,13 @@ function FilmPage(): JSX.Element {
                   </svg>
                   <span>My list</span>
                 </button>
-                <Link to={`/films/${currentFilm.id}/review`} className="btn film-card__button">Add review</Link>
+                {authorizationStatus === AuthorizationStatus.Auth &&
+                  <Link
+                    to={`/films/${currentFilm.id}/review`}
+                    className="btn film-card__button"
+                  >
+                     Add review
+                  </Link>}
               </div>
             </div>
           </div>
@@ -71,14 +93,17 @@ function FilmPage(): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <FilmTabs film={currentFilm} />
+              <FilmTabs film={currentFilm} reviews={reviews} />
             </div>
           </div>
         </div>
       </section>
       <div className="page-content">
         <section className="catalog catalog--like-this">
-          <FilmList films={similarFilms} />
+          <div>
+            {similarFilmsList.length !== 0 && <h2 className="catalog__title">More like this</h2>}
+            <FilmList films={similarFilmsList}/>
+          </div>
         </section>
 
         <footer className="page-footer">

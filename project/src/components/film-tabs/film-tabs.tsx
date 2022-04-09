@@ -2,16 +2,17 @@ import {Film} from '../../types/film';
 import {ItemTabs} from '../../const';
 import {Link} from 'react-router-dom';
 import {MouseEvent, useState} from 'react';
-import {reviews} from '../../mocks/reviews';
 import FilmDetailsTab from './details-tab';
 import FilmOverviewTab from './overview-tab';
 import ReviewsTab from './reviews-tab';
+import {Review} from '../../types/review';
 
 type FilmTabsProps = {
-  film: Film;
+  film: Film,
+  reviews: Review[],
 };
 
-function FilmTabs({film}: FilmTabsProps) {
+function FilmTabs({film, reviews}: FilmTabsProps) {
   const [current, setCurrent] = useState<string>(ItemTabs.Overview);
 
   const tabClickHandler = (evt: MouseEvent<HTMLAnchorElement>, tab: string) => {
@@ -31,9 +32,9 @@ function FilmTabs({film}: FilmTabsProps) {
         </ul>
       </nav>
 
-      {current === ItemTabs.Overview && <FilmOverviewTab film={film}/>}
-      {current === ItemTabs.Details && <FilmDetailsTab film={film}/>}
-      {current === ItemTabs.Reviews && <ReviewsTab reviews={reviews}/>}
+      {current === ItemTabs.Overview && <FilmOverviewTab film={film} />}
+      {current === ItemTabs.Details && <FilmDetailsTab film={film} />}
+      {current === ItemTabs.Reviews && <ReviewsTab reviews={reviews} />}
     </>
   );
 }
