@@ -13,7 +13,8 @@ import PrivateRoute from  '../private-route/private-route';
 import SignIn from '../../pages/sign-in/sign-in';
 
 function App(): JSX.Element {
-  const {films, authorizationStatus} = useAppSelector((state) => state);
+  const {films} = useAppSelector(({FILMS}) => FILMS);
+  const {authorizationStatus} = useAppSelector(({USER}) => USER);
   const favorite = films.filter(({isFavorite}) => isFavorite);
 
   return (

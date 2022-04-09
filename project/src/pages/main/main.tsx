@@ -1,34 +1,14 @@
-import {ALL_GENRES, MAX_CARD_SHOW_COUNT} from '../../const';
-import {filterFilms} from '../../store/action';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import FilmList from '../../components/film-list/film-list';
+import {useAppSelector} from '../../hooks';
 import FilmPromo from '../../components/film-promo/film-promo';
-import GenreList from '../../components/genre-list/genre-list';
 import Loading from '../../components/loading/loading';
 import Logo from '../../components/logo/logo';
-import ShowMoreButton from '../../components/show-more-button/show-more-button';
 import User from '../../components/user/user';
-import UseShowMoreButton from '../../hooks/use-show-more-button/use-show-more-button';
+import Catalog from '../../components/catalog/catalog';
 
 function MainPage(): JSX.Element {
-  const dispatch = useAppDispatch();
-  const {films, filteredFilms, isLoading} = useAppSelector((state) => state);
-  const getToUniqueKeys = (
-    array: {[key: string]: any}[],
-    key: string,
-    initialValue = '',
-  ): string[] => (
-    array
-      .map((item) => item[key])
-      .reduce((uniqueKeys: string[], current) => {
-        if (!uniqueKeys.includes(current)) {
-          uniqueKeys.push(current);
-        }
-        return uniqueKeys;
-      }, [initialValue])
-  );
-  const genres = getToUniqueKeys(films, 'genre', ALL_GENRES);
-  const [visibleFilms, isButtonShown, handleShowMoreButtonClick] = UseShowMoreButton(filteredFilms, MAX_CARD_SHOW_COUNT);
+
+  const {films} = useAppSelector(({FILMS}) => FILMS);
+  const {isLoading} = useAppSelector(({APP}) => APP);
 
   if (isLoading) {
     return (
@@ -46,20 +26,7 @@ function MainPage(): JSX.Element {
       </FilmPromo>
 
       <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-          <GenreList genres={genres} onChange={() => dispatch(filterFilms())} />
-
-          <div className="catalog__films-list">
-            <FilmList films={visibleFilms} />
-          </div>
-
-          <div className="catalog__more">
-            {isButtonShown &&
-            <ShowMoreButton onClick={handleShowMoreButtonClick} /> }
-          </div>
-        </section>
+        <Catalog />
 
         <footer className="page-footer">
           <Logo />

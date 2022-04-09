@@ -4,7 +4,7 @@ export enum AppRoute {
   MyList = '/mylist',
   Film = '/films/:id',
   AddReview = '/films/:id/review',
-  Player = '/player/:id',
+  Player = '/player/:id'
 }
 
 export enum AuthorizationStatus {
@@ -24,12 +24,14 @@ export const REVIEW_LENGTH_MAX = 400;
 
 export const ALL_GENRES = 'All genres';
 
+
 export enum APIRoute {
   Films = '/films',
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
   Similar = '/similar',
+  Promo = 'Promo'
 }
 
 export enum HTTP_CODE {
@@ -49,5 +51,11 @@ export enum RatingName {
 export enum  ItemTabs {
   Overview = 'Overview',
   Details = 'Details',
-  Reviews = 'Reviews',
+  Reviews = 'Reviews'
+}
+
+export enum NameSpace {
+  User = 'USER',
+  Films = 'FILMS',
+  App = 'APP'
 }

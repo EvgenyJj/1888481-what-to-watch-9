@@ -14,7 +14,7 @@ function ReviewForm({filmId}: ReviewFormProps): JSX.Element {
   const [isValid, setIsValid] = useState(false);
   const [isAffected, setIsAffected] = useState(false);
 
-  const {isLoading} = useAppSelector((state: State) => state);
+  const {isLoading} = useAppSelector(({APP}: State) => APP);
 
   const dispatch = useAppDispatch();
 

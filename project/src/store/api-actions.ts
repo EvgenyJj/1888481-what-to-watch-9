@@ -1,11 +1,20 @@
 import {api, store} from '../store';
 import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
 import {AuthData} from '../types/auth-data';
+import {changeLoadingStatus} from './app-settings/app-settings';
 import {createAsyncThunk } from '@reduxjs/toolkit';
 import {dropToken, saveToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
 import {Film} from '../types/film';
-import {loadFilms, filterFilms, requireAuthStatus, loadUserInfo, redirectToRoute, changeLoadingStatus, loadReviews, loadSimilarFilms, loadCurrentFilm} from './action';
+import {
+  loadFilms,
+  loadCurrentFilm,
+  loadSimilarFilms,
+  loadPromoFilm,
+  filterFilms,
+  loadReviews} from './films-data/films-data';
+import {redirectToRoute} from './action';
+import {requireAuthStatus, loadUserInfo} from './user-data/user-data';
 import {Review} from '../types/review';
 import {ReviewData} from '../types/review-data';
 import {UserData} from '../types/user-data';
@@ -103,8 +112,8 @@ export const fetchSimilarFilmsAction = createAsyncThunk(
     try {
       const {data} = await api.get<Film[]>(`${APIRoute.Films}/${id}${APIRoute.Similar}`);
       store.dispatch(loadSimilarFilms(data));
-    } catch (err) {
-      errorHandle(err);
+    } catch (error) {
+      errorHandle(error);
     }
   },
 );
@@ -118,6 +127,21 @@ export const fetchCurrentFilmAction = createAsyncThunk(
     } catch (error) {
       errorHandle(error);
       store.dispatch(loadCurrentFilm(undefined));
+    }
+  },
+);
+
+export const fetchPromoFilmAction = createAsyncThunk(
+  'data/fetchPromoFilm',
+  async () => {
+    try {
+      store.dispatch(changeLoadingStatus(true));
+      const {data} = await api.get<Film>(APIRoute.Promo);
+      store.dispatch(loadPromoFilm(data));
+      store.dispatch(changeLoadingStatus(false));
+    } catch (err) {
+      errorHandle(err);
+      store.dispatch(changeLoadingStatus(false));
     }
   },
 );

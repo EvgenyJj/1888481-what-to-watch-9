@@ -1,4 +1,4 @@
-import {changeGenre} from '../../store/action';
+import {changeGenre} from '../../store/films-data/films-data';
 import {MouseEvent} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
@@ -8,7 +8,7 @@ type GenreListProps = {
 };
 
 function GenreList({genres, onChange}: GenreListProps): JSX.Element {
-  const currentGenre = useAppSelector(({genre}) => genre);
+  const {genre: currentGenre} = useAppSelector(({FILMS}) => FILMS);
   const dispatch = useAppDispatch();
 
   const genreClickHandler = (evt: MouseEvent<HTMLAnchorElement>, genre: string) => {

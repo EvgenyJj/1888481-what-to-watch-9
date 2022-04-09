@@ -4,7 +4,7 @@ import {useAppSelector} from '../../hooks';
 
 function Player(): JSX.Element {
   const {id: idParams} = useParams();
-  const films = useAppSelector((state) => state.films);
+  const {films} = useAppSelector(({FILMS}) => FILMS);
   const film = films.find(({id}) => id.toString() === idParams);
   if (film === undefined) {
     return (<PageNotFound />);
