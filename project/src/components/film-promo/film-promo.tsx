@@ -6,8 +6,11 @@ import {useNavigate} from 'react-router-dom';
 import Loading from '../loading/loading';
 import Logo from '../logo/logo';
 import User from '../user/user';
+import {AuthorizationStatus} from '../../const';
+import {selectAuthorizationStatus} from '../../store/user-data/select';
 
 function FilmPromo(): JSX.Element {
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const promoFilm = useAppSelector(selectPromoFilms);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -19,12 +22,12 @@ function FilmPromo(): JSX.Element {
   const promoId = promoFilm.id;
   const isFavorite = promoFilm.isFavorite;
 
-  const clickPlayHandle = (evt: MouseEvent<HTMLElement>) => {
+  const handlePlayClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     navigate(`/player/${promoFilm.id}`);
   };
 
-  const clickAddHandler= (evt: MouseEvent<HTMLElement>) => {
+  const handleAddClick= (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     dispatch(loadFavouritePromoAction({promoId, isFavorite}));
   };
@@ -55,15 +58,17 @@ function FilmPromo(): JSX.Element {
             </p>
 
             <div className="film-card__buttons">
-              <button className="btn btn--play film-card__button" type="button" onClick={clickPlayHandle}>
+              <button className="btn btn--play film-card__button" type="button" onClick={handlePlayClick}>
                 <svg viewBox="0 0 19 19" width="19" height="19">
                   <use xlinkHref="#play-s"></use>
                 </svg>
                 <span>Play</span>
               </button>
-              <button className="btn btn--list film-card__button" type="button" onClick={clickAddHandler}>
+              <button className="btn btn--list film-card__button" type="button" onClick={handleAddClick}>
                 <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
+                  {isFavorite && authorizationStatus === AuthorizationStatus.Auth
+                    ? <use xlinkHref="#in-list"/>
+                    : <use xlinkHref="#add" />}
                 </svg>
                 <span>My list</span>
               </button>

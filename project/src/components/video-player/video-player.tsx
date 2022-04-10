@@ -42,7 +42,7 @@ function VideoPlayer({name, src}: VideoPlayerProps): JSX.Element {
     }
   }, [isFullScreen]);
 
-  const clickExitHandle = (evt: MouseEvent<HTMLElement>) => {
+  const handleExitClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     navigate(-1);
   };
@@ -61,7 +61,7 @@ function VideoPlayer({name, src}: VideoPlayerProps): JSX.Element {
       <button
         type="button"
         className="player__exit"
-        onClick={clickExitHandle}
+        onClick={handleExitClick}
       >
           Exit
       </button>

@@ -12,7 +12,7 @@ function User(): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const clickLogOutHandle = (evt: MouseEvent<HTMLAnchorElement>) => {
+  const handleLogOutClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
     dispatch(logoutAction());
     dispatch(redirectToRoute(AppRoute.Main));
@@ -29,7 +29,7 @@ function User(): JSX.Element {
         <Link
           className="user-block__link"
           to="/"
-          onClick={clickLogOutHandle}
+          onClick={handleLogOutClick}
         >
             Sign out
         </Link>

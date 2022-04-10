@@ -33,7 +33,7 @@ function PreviewVideoPlayer({
     setVideoDuration(videoRef.current.duration);
   });
 
-  const timeChangeHandle = () => {
+  const handleTimeChange = () => {
     if (videoRef.current === null) {
       return;
     }
@@ -46,7 +46,7 @@ function PreviewVideoPlayer({
       muted={isMuted}
       ref={videoRef}
       src={src}
-      onTimeUpdate={timeChangeHandle}
+      onTimeUpdate={handleTimeChange}
       onCanPlay={setIsLoaded}
     />
   );

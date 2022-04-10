@@ -39,6 +39,7 @@ function FilmPreview({isMuted, isPlaying, poster, src}: FilmPreviewProps): JSX.E
       poster={poster}
       ref={videoRef}
       src={src}
+      width="280"
       height="175"
     />
   );

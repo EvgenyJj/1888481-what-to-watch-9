@@ -1,4 +1,4 @@
-import {AppRoute, AuthorizationStatus, MAX_SIMILAR_COUNT} from '../../const';
+import {AuthorizationStatus, MAX_SIMILAR_COUNT} from '../../const';
 import {fetchReviewsAction, fetchCurrentFilmAction, fetchSimilarFilmsAction, loadFavouriteCurrentAction} from '../../store/api-actions';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {MouseEvent, useEffect} from 'react';
@@ -41,15 +41,14 @@ function FilmPage(): JSX.Element {
 
   const isFavorite = currentFilm.isFavorite;
 
-  const onClickPlay = (evt: MouseEvent<HTMLElement>) => {
+  const handlePlayClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     navigate(`/player/${currentFilm.id}`);
   };
 
-  const onClickAdd = (evt: MouseEvent<HTMLElement>) => {
+  const handleAddClick = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     dispatch(loadFavouriteCurrentAction({currentFilmId, isFavorite}));
-    navigate(AppRoute.MyList);
   };
 
   const filteredSimilarFilms = similarFilms.filter((film) => film.genre === currentFilm.genre && film.id !== currentFilm.id).slice(0, MAX_SIMILAR_COUNT);
@@ -75,13 +74,13 @@ function FilmPage(): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button" onClick={onClickPlay}>
+                <button className="btn btn--play film-card__button" type="button" onClick={handlePlayClick}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button" onClick={onClickAdd}>
+                <button className="btn btn--list film-card__button" type="button" onClick={handleAddClick}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     {isFavorite && authorizationStatus === AuthorizationStatus.Auth
                       ? <use xlinkHref="#in-list"/>

@@ -27,12 +27,12 @@ function ReviewForm(): JSX.Element {
     setIsValid(true);
   }, [review, isAffected]);
 
-  const inputTextReviewHandle = ({target: {value}}: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextReviewInput = ({target: {value}}: ChangeEvent<HTMLTextAreaElement>) => {
     setReview(value);
     setIsAffected(true);
   };
 
-  const submitReviewHandle = (evt: FormEvent) => {
+  const handleReviewSubmit = (evt: FormEvent) => {
     evt.preventDefault();
     if (!isValid) {
       return;
@@ -46,7 +46,7 @@ function ReviewForm(): JSX.Element {
   };
 
   return (
-    <form action="#" className="add-review__form" onSubmit={submitReviewHandle}>
+    <form action="#" className="add-review__form" onSubmit={handleReviewSubmit}>
       <div className="rating">
         <div className="rating__stars">
           {
@@ -73,7 +73,7 @@ function ReviewForm(): JSX.Element {
           id="review-text"
           placeholder="Review text"
           value={review}
-          onChange={inputTextReviewHandle}
+          onChange={handleTextReviewInput}
         />
         <div className="add-review__submit">
           <button className="add-review__btn" type="submit" disabled={!isValid}>Post</button>

@@ -10,7 +10,7 @@ type GenreListProps = {
 
 function GenreList({genres, currentGenre, setCurrentGenre, setMaxFilmCount}: GenreListProps): JSX.Element {
 
-  const genreClickHandle = (evt: MouseEvent<HTMLAnchorElement>, genre: string) => {
+  const handleGenreClick = (evt: MouseEvent<HTMLAnchorElement>, genre: string) => {
     evt.preventDefault();
     setCurrentGenre(genre);
     setMaxFilmCount();
@@ -20,7 +20,7 @@ function GenreList({genres, currentGenre, setCurrentGenre, setMaxFilmCount}: Gen
     <ul className="catalog__genres-list">
       {genres.map((genre) => (
         <li className={`catalog__genres-item${genre === currentGenre ? ' catalog__genres-item--active' : ''}`} key={genre}>
-          <Link to="#" className="catalog__genres-link" onClick={(evt) => genreClickHandle(evt, genre)}>{genre}</Link>
+          <Link to="#" className="catalog__genres-link" onClick={(evt) => handleGenreClick(evt, genre)}>{genre}</Link>
         </li>
       ))}
     </ul>

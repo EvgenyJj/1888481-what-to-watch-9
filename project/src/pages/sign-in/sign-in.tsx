@@ -15,7 +15,7 @@ function SignIn(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const submitHandle = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
     if (email.trim() === '' || password.trim() === '') {
@@ -39,7 +39,7 @@ function SignIn(): JSX.Element {
         <form
           action="#"
           className="sign-in__form"
-          onSubmit={submitHandle}
+          onSubmit={handleSubmit}
         >
           <div className="sign-in__fields">
             <div className="sign-in__field">

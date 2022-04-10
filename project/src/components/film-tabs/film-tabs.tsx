@@ -15,7 +15,7 @@ type FilmTabsProps = {
 function FilmTabs({film, reviews}: FilmTabsProps) {
   const [current, setCurrent] = useState<string>(ItemTabs.Overview);
 
-  const tabClickHandler = (evt: MouseEvent<HTMLAnchorElement>, tab: string) => {
+  const handleTabClick = (evt: MouseEvent<HTMLAnchorElement>, tab: string) => {
     evt.preventDefault();
     setCurrent(tab);
   };
@@ -26,7 +26,7 @@ function FilmTabs({film, reviews}: FilmTabsProps) {
         <ul className="film-nav__list">
           {Object.keys(ItemTabs).map((tab) => (
             <li key={tab} className={`film-nav__item${tab === current ? ' film-nav__item--active' : ''}`}>
-              <Link to="#" className="film-nav__link" onClick={(evt) => tabClickHandler(evt, tab)}>{tab}</Link>
+              <Link to="#" className="film-nav__link" onClick={(evt) => handleTabClick(evt, tab)}>{tab}</Link>
             </li>
           ))}
         </ul>

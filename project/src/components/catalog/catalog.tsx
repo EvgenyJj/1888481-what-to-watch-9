@@ -23,15 +23,13 @@ function Catalog(): JSX.Element {
         setCurrentGenre={(genre) => setCurrentGenre(genre)}
         setMaxFilmCount={() => setMaxFilmsCount(MAX_CARD_SHOW_COUNT)}
       />
-      <div className="catalog__films-list">
-        <FilmList
-          films={filteredFilms.slice(0, maxFilmsCount)}
-        />
-        {filteredFilms.length > maxFilmsCount &&
+      <FilmList
+        films={filteredFilms.slice(0, maxFilmsCount)}
+      />
+      {filteredFilms.length > maxFilmsCount &&
       <ShowMoreButton
         setMaxFilmCount={() => setMaxFilmsCount(maxFilmsCount + MAX_CARD_SHOW_COUNT)}
       />}
-      </div>
     </section>
   );
 }
