@@ -1,9 +1,9 @@
-import {Review} from '../../types/review';
+import {FilmsReviewData} from '../../types/review';
 import {REVIEWS_COL_COUNT} from '../../const';
 import FilmReview from '../film-review/film-review';
 
 type ReviewsTabProps = {
-  reviews: Review[],
+  reviews: FilmsReviewData[],
 }
 
 function ReviewsTab({reviews}: ReviewsTabProps): JSX.Element {

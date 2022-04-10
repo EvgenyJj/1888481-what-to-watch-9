@@ -1,8 +1,8 @@
-import {Review} from '../../types/review';
+import {FilmsReviewData} from '../../types/review';
 import dayjs from 'dayjs';
 
 type FilmReviewProps = {
-  review: Review
+  review: FilmsReviewData
 }
 
 function FilmReview({review}: FilmReviewProps) {

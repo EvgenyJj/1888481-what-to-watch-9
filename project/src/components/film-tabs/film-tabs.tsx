@@ -1,15 +1,15 @@
 import {Film} from '../../types/film';
+import {FilmsReviewData} from '../../types/review';
 import {ItemTabs} from '../../const';
 import {Link} from 'react-router-dom';
 import {MouseEvent, useState} from 'react';
 import FilmDetailsTab from './details-tab';
 import FilmOverviewTab from './overview-tab';
 import ReviewsTab from './reviews-tab';
-import {Review} from '../../types/review';
 
 type FilmTabsProps = {
   film: Film,
-  reviews: Review[],
+  reviews: FilmsReviewData[],
 };
 
 function FilmTabs({film, reviews}: FilmTabsProps) {

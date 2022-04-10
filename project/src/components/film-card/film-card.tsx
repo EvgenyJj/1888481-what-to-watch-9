@@ -1,6 +1,6 @@
-import VideoPlayer from '../video-player/video-player';
 import {Film} from '../../types/film';
 import {Link} from 'react-router-dom';
+import FilmPreview from '../film-preview/film-preview';
 
 type FilmCardProps = {
   film: Film,
@@ -16,11 +16,11 @@ function FilmCard({film, isActive, onHover}: FilmCardProps): JSX.Element {
       onMouseOut={() => onHover(null)}
     >
       <div className="small-film-card__image">
-        <VideoPlayer
+        <FilmPreview
           isMuted
           isPlaying={isActive}
           poster={film.previewImage}
-          src={film.videoLink}
+          src={film.previewVideoLink}
         />
       </div>
       <h3 className="small-film-card__title">

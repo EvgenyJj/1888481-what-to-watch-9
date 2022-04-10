@@ -1,31 +1,35 @@
 import {AppRoute, AuthorizationStatus, MAX_SIMILAR_COUNT} from '../../const';
-import {fetchSimilarFilmsAction, fetchReviewsAction, fetchCurrentFilmAction} from '../../store/api-actions';
-import {useAppSelector} from '../../hooks';
-import {useDispatch} from 'react-redux';
-import {useEffect} from 'react';
-import {useParams, useNavigate, Link} from 'react-router-dom';
+import {fetchReviewsAction, fetchCurrentFilmAction, fetchSimilarFilmsAction, loadFavouriteCurrentAction} from '../../store/api-actions';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import {MouseEvent, useEffect} from 'react';
+import {selectAuthorizationStatus} from '../../store/user-data/select';
+import {selectReviews, selectCurrentFilms, selectSimilarFilms} from '../../store/films-data/select';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import FilmList from '../../components/film-list/film-list';
 import FilmTabs from '../../components/film-tabs/film-tabs';
+import Footer from '../../components/footer/footer';
 import Loading from '../../components/loading/loading';
 import Logo from '../../components/logo/logo';
 import PageNotFound from '../../components/page-not-found/page-not-found';
 import User from '../../components/user/user';
 
 function FilmPage(): JSX.Element {
-  const {currentFilm, similarFilms, reviews} = useAppSelector(({FILMS}) => FILMS);
-  const {authorizationStatus} = useAppSelector(({USER}) => USER);
+  const authorizationStatus = useAppSelector(selectAuthorizationStatus);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const params = useParams();
   const currentFilmId = Number(params.id);
+  const currentFilm = useAppSelector(selectCurrentFilms);
+  const similarFilms = useAppSelector(selectSimilarFilms);
+  const reviewsList = useAppSelector(selectReviews);
 
   useEffect(() => {
-    if (currentFilm === null || currentFilm?.id !== currentFilmId) {
+    if (currentFilmId) {
       dispatch(fetchCurrentFilmAction(currentFilmId));
       dispatch(fetchSimilarFilmsAction(currentFilmId));
       dispatch(fetchReviewsAction(currentFilmId));
     }
-  }, [currentFilm, currentFilmId, dispatch]);
+  }, [currentFilmId, dispatch]);
 
   if (currentFilm === undefined) {
     return <PageNotFound />;
@@ -35,9 +39,20 @@ function FilmPage(): JSX.Element {
     return <Loading />;
   }
 
-  const similarFilmsList = similarFilms.filter((film) => film.genre === currentFilm.genre && film.id !== currentFilm.id).slice(0, MAX_SIMILAR_COUNT);
-  const onClickPlay = () => navigate(`/player/${currentFilm.id}`);
-  const onClickAdd = () => navigate(AppRoute.MyList);
+  const isFavorite = currentFilm.isFavorite;
+
+  const onClickPlay = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    navigate(`/player/${currentFilm.id}`);
+  };
+
+  const onClickAdd = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(loadFavouriteCurrentAction({currentFilmId, isFavorite}));
+    navigate(AppRoute.MyList);
+  };
+
+  const filteredSimilarFilms = similarFilms.filter((film) => film.genre === currentFilm.genre && film.id !== currentFilm.id).slice(0, MAX_SIMILAR_COUNT);
 
   return(
     <>
@@ -46,14 +61,11 @@ function FilmPage(): JSX.Element {
           <div className="film-card__bg">
             <img src={currentFilm.backgroundImage} alt={currentFilm.name} />
           </div>
-
           <h1 className="visually-hidden">WTW</h1>
-
           <header className="page-header film-card__head">
             <Logo />
             <User />
           </header>
-
           <div className="film-card__wrap">
             <div className="film-card__desc">
               <h2 className="film-card__title">{currentFilm.name}</h2>
@@ -71,7 +83,9 @@ function FilmPage(): JSX.Element {
                 </button>
                 <button className="btn btn--list film-card__button" type="button" onClick={onClickAdd}>
                   <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
+                    {isFavorite && authorizationStatus === AuthorizationStatus.Auth
+                      ? <use xlinkHref="#in-list"/>
+                      : <use xlinkHref="#add" />}
                   </svg>
                   <span>My list</span>
                 </button>
@@ -94,7 +108,7 @@ function FilmPage(): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <FilmTabs film={currentFilm} reviews={reviews} />
+              <FilmTabs film={currentFilm} reviews={reviewsList} />
             </div>
           </div>
         </div>
@@ -102,18 +116,11 @@ function FilmPage(): JSX.Element {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <div>
-            {similarFilmsList.length !== 0 && <h2 className="catalog__title">More like this</h2>}
-            <FilmList films={similarFilmsList}/>
+            {filteredSimilarFilms.length !== 0 && <h2 className="catalog__title">More like this</h2>}
+            <FilmList films={filteredSimilarFilms}/>
           </div>
         </section>
-
-        <footer className="page-footer">
-          <Logo />
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

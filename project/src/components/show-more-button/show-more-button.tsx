@@ -1,11 +1,11 @@
 type ShowMoreButtonProps ={
-  onClick: () => void
+  setMaxFilmCount: () => void
 }
 
-function ShowMoreButton({onClick}: ShowMoreButtonProps): JSX.Element {
+function ShowMoreButton({setMaxFilmCount}: ShowMoreButtonProps): JSX.Element {
   return (
     <div className="catalog__more">
-      <button className="catalog__button" type="button" onClick={onClick}>Show more</button>
+      <button className="catalog__button" type="button" onClick={setMaxFilmCount}>Show more</button>
     </div>
   );
 }
