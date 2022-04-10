@@ -14,6 +14,7 @@ export enum AuthorizationStatus {
 }
 
 export const TIMER_DELAY = 1000;
+export const SECONDS_PER_HOUR = 3600;
 export const MINS_PER_HOUR = 60;
 export const REVIEWS_COL_COUNT = 2;
 export const MAX_SIMILAR_COUNT = 4;
@@ -24,14 +25,14 @@ export const REVIEW_LENGTH_MAX = 400;
 
 export const ALL_GENRES = 'All genres';
 
-
 export enum APIRoute {
   Films = '/films',
   Login = '/login',
   Logout = '/logout',
   Comments = '/comments',
   Similar = '/similar',
-  Promo = 'Promo'
+  Promo = '/promo',
+  Favorite = '/favorite'
 }
 
 export enum HTTP_CODE {

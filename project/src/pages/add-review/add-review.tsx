@@ -1,35 +1,48 @@
+import {fetchCurrentFilmAction} from '../../store/api-actions';
 import {Link, useParams} from 'react-router-dom';
-import {useAppSelector} from '../../hooks';
+import {selectCurrentFilms} from '../../store/films-data/select';
+import {useAppSelector, useAppDispatch} from '../../hooks';
+import {useEffect} from 'react';
+import Loading from '../../components/loading/loading';
 import Logo from '../../components/logo/logo';
 import PageNotFound from '../../components/page-not-found/page-not-found';
 import ReviewForm from '../../components/review-form/review-form';
 import User from '../../components/user/user';
 
-function AddReview(): JSX.Element | null {
-  const {id: idParams} = useParams();
-  const {films} = useAppSelector(({FILMS}) => FILMS);
-  const film = films.find(({id}) => id.toString() === idParams);
+function AddReview(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const params = useParams();
 
-  if (film === undefined) {
+  const currentFilm = useAppSelector(selectCurrentFilms);
+  const currentFilmId = Number(params.id);
+
+  useEffect(() => {
+    if(currentFilmId) {
+      dispatch(fetchCurrentFilmAction(currentFilmId));
+    }
+  }, [currentFilmId, dispatch]);
+
+  if (currentFilm === undefined) {
     return <PageNotFound />;
+  }
+
+  if (currentFilm === null || currentFilm.id !== currentFilmId) {
+    return <Loading />;
   }
 
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={film.backgroundImage} alt={film.name} />
+          <img src={currentFilm.backgroundImage} alt={currentFilm.name} />
         </div>
-
         <h1 className="visually-hidden">WTW</h1>
-
         <header className="page-header">
           <Logo />
-
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link to={`/films/${film.id}`} className="breadcrumbs__link">{film.name}</Link>
+                <Link to={`/films/${currentFilm.id}`} className="breadcrumbs__link">{currentFilm.name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <Link className="breadcrumbs__link" to="/">Add review</Link>
@@ -38,16 +51,13 @@ function AddReview(): JSX.Element | null {
           </nav>
           <User />
         </header>
-
         <div className="film-card__poster film-card__poster--small">
-          <img src={film.posterImage} alt={film.name} width="218" height="327" />
+          <img src={currentFilm.posterImage} alt={currentFilm.name} width="218" height="327" />
         </div>
       </div>
-
       <div className="add-review">
-        <ReviewForm filmId={film.id} />
+        <ReviewForm />
       </div>
-
     </section>
   );
 }

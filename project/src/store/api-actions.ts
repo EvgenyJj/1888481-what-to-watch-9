@@ -1,7 +1,5 @@
 import {api, store} from '../store';
 import {APIRoute, AuthorizationStatus, AppRoute} from '../const';
-import {AuthData} from '../types/auth-data';
-import {changeLoadingStatus} from './app-settings/app-settings';
 import {createAsyncThunk } from '@reduxjs/toolkit';
 import {dropToken, saveToken} from '../services/token';
 import {errorHandle} from '../services/error-handle';
@@ -11,26 +9,21 @@ import {
   loadCurrentFilm,
   loadSimilarFilms,
   loadPromoFilm,
-  filterFilms,
+  loadFavoriteFilms,
   loadReviews} from './films-data/films-data';
 import {redirectToRoute} from './action';
 import {requireAuthStatus, loadUserInfo} from './user-data/user-data';
-import {Review} from '../types/review';
-import {ReviewData} from '../types/review-data';
-import {UserData} from '../types/user-data';
+import {UsersReviewData} from '../types/review';
+import {UserData, AuthData} from '../types/user';
 
 export const fetchFilmAction = createAsyncThunk(
   'data/fetchFilms',
   async () => {
     try {
-      store.dispatch(changeLoadingStatus(true));
       const {data} = await api.get<Film[]>(APIRoute.Films);
       store.dispatch(loadFilms(data));
-      store.dispatch(filterFilms());
-      store.dispatch(changeLoadingStatus(false));
     } catch (error) {
       errorHandle(error);
-      store.dispatch(changeLoadingStatus(false));
     }
   },
 );
@@ -50,7 +43,7 @@ export const checkAuthAction = createAsyncThunk(
 
 export const loginAction = createAsyncThunk(
   'user/login',
-  async ({login: email, password}: AuthData) => {
+  async ({email, password}: AuthData) => {
     try {
       const {data: {token, ...user}} = await api.post<UserData>(APIRoute.Login, {email, password});
       saveToken(token);
@@ -82,7 +75,7 @@ export const fetchReviewsAction = createAsyncThunk(
   'data/fetchReviews',
   async (id: number) => {
     try {
-      const {data} = await api.get<Review[]>(`${APIRoute.Comments}/${id}`);
+      const {data} = await api.get<Film[]>(`${APIRoute.Comments}/${id}`);
       store.dispatch(loadReviews(data));
     } catch (error) {
       errorHandle(error);
@@ -92,16 +85,13 @@ export const fetchReviewsAction = createAsyncThunk(
 
 export const postReviewAction = createAsyncThunk(
   'data/postReview',
-  async ({filmId, ...review}: ReviewData) => {
+  async ({id, comment, rating}: UsersReviewData) => {
     try {
-      store.dispatch(changeLoadingStatus(true));
-      const {data} = await api.post<Review[]>(`${APIRoute.Comments}/${filmId}`, {...review});
+      const {data} = await api.post<UsersReviewData[]>(`${APIRoute.Comments}/${id}`, {comment, rating});
       store.dispatch(loadReviews(data));
-      store.dispatch(changeLoadingStatus(false));
-      store.dispatch(redirectToRoute(`${APIRoute.Films}/${filmId}`));
+      store.dispatch(redirectToRoute(`${APIRoute.Films}/${id}`));
     } catch (error) {
       errorHandle(error);
-      store.dispatch(changeLoadingStatus(false));
     }
   },
 );
@@ -135,13 +125,46 @@ export const fetchPromoFilmAction = createAsyncThunk(
   'data/fetchPromoFilm',
   async () => {
     try {
-      store.dispatch(changeLoadingStatus(true));
       const {data} = await api.get<Film>(APIRoute.Promo);
       store.dispatch(loadPromoFilm(data));
-      store.dispatch(changeLoadingStatus(false));
-    } catch (err) {
-      errorHandle(err);
-      store.dispatch(changeLoadingStatus(false));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const fetchFavoriteFilmsAction = createAsyncThunk(
+  'data/fetchFavoriteFilms',
+  async () => {
+    try {
+      const {data} = await api.get<Film[]>(APIRoute.Favorite);
+      store.dispatch(loadFavoriteFilms(data));
+    } catch (error) {
+      errorHandle(error);
+    }
+  },
+);
+
+export const loadFavouritePromoAction = createAsyncThunk(
+  'data/setFavouritePromo',
+  async ({promoId, isFavorite}: {promoId: number, isFavorite: boolean}) => {
+    try {
+      const {data} = await api.post<Film>(`${APIRoute.Favorite}/${promoId}/${isFavorite ? 0 : 1}`);
+      store.dispatch(loadPromoFilm(data));
+    } catch (error) {
+      store.dispatch(redirectToRoute(AppRoute.SignIn));
+    }
+  },
+);
+
+export const loadFavouriteCurrentAction = createAsyncThunk(
+  'data/setFavouriteCurrent',
+  async ({currentFilmId, isFavorite}: {currentFilmId: number, isFavorite: boolean}) => {
+    try {
+      const {data} = await api.post<Film>(`${APIRoute.Favorite}/${currentFilmId}/${isFavorite ? 0 : 1}`);
+      store.dispatch(loadCurrentFilm(data));
+    } catch (error) {
+      store.dispatch(redirectToRoute(AppRoute.SignIn));
     }
   },
 );

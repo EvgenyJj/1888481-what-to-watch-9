@@ -1,6 +1,6 @@
-import FilmCard from '../film-card/film-card';
 import {Film} from '../../types/film';
 import {useState} from 'react';
+import FilmCard from '../film-card/film-card';
 
 type FilmListProps = {
   films: Film[],

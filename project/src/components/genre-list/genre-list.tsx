@@ -1,27 +1,26 @@
-import {changeGenre} from '../../store/films-data/films-data';
+import {Link} from 'react-router-dom';
 import {MouseEvent} from 'react';
-import {useAppDispatch, useAppSelector} from '../../hooks';
 
 type GenreListProps = {
   genres: string[],
-  onChange: () => void
+  currentGenre: string,
+  setCurrentGenre: (genre: string) => void;
+  setMaxFilmCount: () => void;
 };
 
-function GenreList({genres, onChange}: GenreListProps): JSX.Element {
-  const {genre: currentGenre} = useAppSelector(({FILMS}) => FILMS);
-  const dispatch = useAppDispatch();
+function GenreList({genres, currentGenre, setCurrentGenre, setMaxFilmCount}: GenreListProps): JSX.Element {
 
-  const genreClickHandler = (evt: MouseEvent<HTMLAnchorElement>, genre: string) => {
+  const handleGenreClick = (evt: MouseEvent<HTMLAnchorElement>, genre: string) => {
     evt.preventDefault();
-    dispatch(changeGenre(genre));
-    onChange();
+    setCurrentGenre(genre);
+    setMaxFilmCount();
   };
 
   return (
     <ul className="catalog__genres-list">
       {genres.map((genre) => (
         <li className={`catalog__genres-item${genre === currentGenre ? ' catalog__genres-item--active' : ''}`} key={genre}>
-          <a href="#" className="catalog__genres-link" onClick={(evt: MouseEvent<HTMLAnchorElement>) => genreClickHandler(evt, genre)}>{genre}</a>
+          <Link to="#" className="catalog__genres-link" onClick={(evt) => handleGenreClick(evt, genre)}>{genre}</Link>
         </li>
       ))}
     </ul>

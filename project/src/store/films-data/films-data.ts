@@ -1,16 +1,15 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {FilmsData} from '../../types/state';
-import {NameSpace, ALL_GENRES} from '../../const';
+import {NameSpace} from '../../const';
 
 const initialState: FilmsData = {
   currentFilm: null,
   favoriteFilms: [],
   films: [],
-  filteredFilms: [],
-  genre: ALL_GENRES,
   promoFilm: null,
   reviews: [],
   similarFilms: [],
+  isDataLoaded: false,
 };
 
 export const filmsData = createSlice({
@@ -19,6 +18,7 @@ export const filmsData = createSlice({
   reducers: {
     loadFilms: (state, action) => {
       state.films = action.payload;
+      state.isDataLoaded = true;
     },
     loadCurrentFilm: (state, action) => {
       state.currentFilm = action.payload;
@@ -32,23 +32,12 @@ export const filmsData = createSlice({
     loadFavoriteFilms: (state, action) => {
       state.favoriteFilms= action.payload;
     },
-    filterFilms: (state) => {
-      state.genre === ALL_GENRES
-        ? state.filteredFilms = state.films
-        : state.filteredFilms = state.films.filter(({genre}) => genre === state.genre);
-    },
-    changeGenre: (state, action) => {
-      state.genre = action.payload;
-    },
     loadReviews: (state, action) => {
       state.reviews = action.payload;
     },
-    changeFilm: (state, action) => {
-      const index = state.films.findIndex(({id}) => id === action.payload.id);
-      state.films[index] = action.payload;
-    },
   },
 });
+
 
 export const {
   loadFilms,
@@ -56,8 +45,4 @@ export const {
   loadSimilarFilms,
   loadPromoFilm,
   loadFavoriteFilms,
-  filterFilms,
-  changeGenre,
-  loadReviews,
-  changeFilm,
-} = filmsData.actions;
+  loadReviews} = filmsData.actions;
