@@ -32,9 +32,6 @@ export const filmsData = createSlice({
     loadFavoriteFilms: (state, action) => {
       state.favoriteFilms= action.payload;
     },
-    clearCurrentFilm: (state) => {
-      state.currentFilm = null;
-    },
     loadReviews: (state, action) => {
       state.reviews = action.payload;
     },
@@ -48,5 +45,4 @@ export const {
   loadSimilarFilms,
   loadPromoFilm,
   loadFavoriteFilms,
-  clearCurrentFilm,
   loadReviews} = filmsData.actions;
