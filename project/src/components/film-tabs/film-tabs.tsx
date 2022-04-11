@@ -3,8 +3,8 @@ import {FilmsReviewData} from '../../types/review';
 import {ItemTabs} from '../../const';
 import {Link} from 'react-router-dom';
 import {MouseEvent, useState} from 'react';
-import FilmDetailsTab from './details-tab';
-import FilmOverviewTab from './overview-tab';
+import FilmDetailsTab from './film-details-tab';
+import FilmOverviewTab from './film-overview-tab';
 import ReviewsTab from './reviews-tab';
 
 type FilmTabsProps = {

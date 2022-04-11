@@ -24,8 +24,14 @@ function ReviewForm(): JSX.Element {
       setIsValid(false);
       return;
     }
+
+    if (rating === 0) {
+      setIsValid(false);
+      return;
+    }
+
     setIsValid(true);
-  }, [review, isAffected]);
+  }, [review, rating, isAffected]);
 
   const handleTextReviewInput = ({target: {value}}: ChangeEvent<HTMLTextAreaElement>) => {
     setReview(value);
@@ -79,6 +85,10 @@ function ReviewForm(): JSX.Element {
           <button className="add-review__btn" type="submit" disabled={!isValid}>Post</button>
         </div>
       </div>
+      {!isValid && isAffected &&
+        <p className="form-message">
+Give the movie a star rating and leave a review of at least {REVIEW_LENGTH_MIN} and no more than {REVIEW_LENGTH_MAX} characters.
+        </p>}
     </form>
   );
 }
